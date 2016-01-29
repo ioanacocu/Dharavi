@@ -1,0 +1,48 @@
+body, #box{
+			width: 100%;
+		}
+		#map-canvas{
+			width: 90%;
+			float: left;
+			margin-left: 5%;
+			margin-top: 2%;
+		}
+		#negotiation{
+			width: 18%;
+			float: right;
+			display: none;
+			margin-right: 1%;
+			margin-top: 2%;
+			height: 100%;
+			border: 5px solid brown;
+			background: url(../img/hd-bg.png);
+		}
+		#player{
+			display: none;
+		}
+		.scrollFix {
+			line-height: 1.35;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		#shape_modal {
+			margin-top: 0px;
+			top: 14;
+		}
+		#register_modal {
+			margin-top: 0px;
+			top: 14;
+		}
+		#safe_path{
+			width: 18%;
+			float: right;
+			display: none;
+			margin-right: 1%;
+			margin-top: 2%;
+			height: 100%;
+			border: 5px solid brown;
+			background: url(../img/hd-bg.png);
+		}
+		#obstructions_checklist{
+			text-align: center;
+		}

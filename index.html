@@ -1,0 +1,200 @@
+<html>
+<head>
+	<style type="text/css">
+	html { height: 100% }
+	body { height: 80%; margin: 40; padding: 0 }
+	#map-canvas { height: 100% }
+	</style>
+	
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXK2IgKVrtxAbX2KnKEAnAmsVvBNfrhts&sensor=false&libraries=geometry,drawing">
+	</script>
+	
+	<link rel="stylesheet" type="text/css" media="all" href="css/style.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/ericprieto-simply-toast-6d5bbb5/simply-toast.css">
+	<link rel="stylesheet" type="text/css" media="all" href="css/pageStyle.css">
+	<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.leanModal.min.js"></script>
+
+	<script type="text/javascript" charset="utf-8" src="ericprieto-simply-toast-6d5bbb5/simply-toast.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>	
+
+	<script type="text/javascript" src="collectpoints.js"></script> 
+	<script type="text/javascript" src="geoencode.js"></script>
+	
+	<script type="text/javascript" src="menuFunc.js"></script>
+	
+</head>
+<body>
+	<nav class="navbar navbar-default" role="navigation" id="non-player">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<span class="navbar-brand">Urban Planning</span>
+			</div>
+
+	
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a class="active" href="javascript:remove()">Reset</a></li>
+					<li><a href="#shape_modal" id="modaltrigger1">Tag Dataset</a></li>
+					<li><a href="javascript:change_player()">Finish</a></li>
+					<li><a href="#register_modal" id="modaltrigger3">Log In</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+	<nav class="navbar navbar-default" role="navigation" id="player">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<span class="navbar-brand">Urban Planning</span>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="javascript:remove()">Reset</a></li>
+					<li><a href="javascript:new_marker()">Draw Path</a></li>
+					<li><a href="javascript:find_intersection()">Process Path</a></li>
+					<li><a href="javascript:PopulateNegotiationPlaces()">Negotiate</a></li>
+					<li><a href="javascript:PopulateObstructionsForSafePath()">Safe Path</a></li>
+					<li><a href="javascript:construction_cost()">Construction Cost</a></li>
+					<li ><a href="#parameter_modal" id="modaltrigger">Increase Budget</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+
+<div class="loginmodal" id="parameter_modal" style="display:none;">
+		<h1>Enter Parameters</h1>
+		<form class="loginform" id="parameter_form" method="post" action="index.html">
+			<!-- <label for="username">Width of Road:</label>
+			<input type="text" name="username" id="width" class="txtfield" tabindex="1"> -->
+
+			<label for="password">Total Budget: (INR)</label>
+			<input type="text" name="password" id="cost" class="txtfield" tabindex="2">
+
+			<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Submit" tabindex="3"></div>
+		</form>
+	</div>
+<div class="loginmodal" id="register_modal" style="display:none;">
+		<h1>Login or Register</h1>
+		<form class="loginform" id="register_form" method="post" action="index.html">
+			<!-- <label for="username">Width of Road:</label>
+			<input type="text" name="username" id="width" class="txtfield" tabindex="1"> -->
+
+			<label for="UserName">Username:</label>
+			<input type="text" name="password" id="UserName" class="txtfield" tabindex="2">
+			<label for="Password">Password:</label>
+			<input type="text" name="password" id="Password" class="txtfield" tabindex="2">
+
+			<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Submit" tabindex="3"></div>
+		</form>
+	</div>
+
+<div class="loginmodal" id="shape_modal" style="display:none;">
+		<h2>Property Details</h2>
+		<form class="loginform" id="shape_form" method="get" action="javascript:tag_dataset()">
+			<label for="username">Shape:</label>
+			<form class="loginform" id="shape_form" method="get" action="javascript:tag_dataset()">
+			<select id="shape" class="txtfield" tabindex="1">
+  				<option value="circle">Circle</option>
+  				<option value="rectangle">Rectangle</option>
+ 			    </select>
+ 			</form>
+			
+			<label for="username">Name:</label>
+			<input type="text" name="username" id="name" class="txtfield" tabindex="1">
+
+			<label for="username">Type:</label>
+			<select id="type" class="txtfield" tabindex="1">
+  				<option value="NGO">NGO</option>
+  				<option value="GOV">GOV</option>
+  				<option value="PVT">PVT</option>
+ 			    </select>
+			<!-- <input type="text" name="username" id="type" class="txtfield" tabindex="1"> -->
+
+			<label for="username">Radial Distance: (if circle)</label>
+			<input type="text" name="username" id="radial" class="txtfield" tabindex="1">
+
+			<label for="username">Cost per meter square:</label>
+			<input type="text" name="username" id="costpmetersquare" class="txtfield" tabindex="1">
+
+			<label for="username">Negotiation margin:</label>
+			<input type="text" name="username" id="margin" class="txtfield" tabindex="1">
+
+			<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Enter" tabindex="3"></div>
+		</form>
+	</div>
+<div id="box">
+		<div id="map-canvas"></div>
+		<div id="negotiation">
+			<div>
+			    Select <select onchange="javascript:negotiationselectionchanged()" id = "negotiation-places"><option></option></select>
+			    <div id="ongoing_negotiation">
+
+			    </div>	
+			</div>
+		</div>
+		</div>
+		</div>
+	
+
+</body>
+	<script type="text/javascript">
+	$(function(){
+		$('#parameter_form').submit(function(e) {
+			budget=$('#cost').val();
+			return false;
+		});
+
+		$('#register_form').submit(function(e) {
+			Pass=$('#Password').val();
+			UserName=$('#UserName').val();
+			console.log(Pass);
+			console.log(UserName);
+			return false;
+		});
+		$('#shape_form').submit(function(e){
+			shape_entered=$('#shape').val();
+			name_entered=$('#name').val();
+			type_entered=$('#type').val();
+			radial_entered=$('#radial').val();
+			cost_entered=$('#costpmetersquare').val();
+			margin_entered=$('#margin').val();
+			console.log(shape_entered);
+			console.log(name_entered);
+			console.log(type_entered);
+			console.log(radial_entered);
+			console.log(cost_entered);
+			console.log(margin_entered);
+			console.log('checked');
+			//return true;
+		});
+		$('#modaltrigger').leanModal({ top: 180, overlay: 0.45, closeButton: ".hidemodal" });
+		$('#modaltrigger1').leanModal({ top: 14, overlay: 0.45, closeButton: ".hidemodal" });
+		$('#modaltrigger3').leanModal({ top: 14, overlay: 0.45, closeButton: ".hidemodal" });
+		window.onload = function() {
+			$('#modaltrigger3').click();
+		}
+	});
+	</script>
+
+
+</html>
+
+
