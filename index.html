@@ -7,7 +7,9 @@
 	</style>
 	
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXK2IgKVrtxAbX2KnKEAnAmsVvBNfrhts&sensor=false&libraries=geometry,drawing">
+
 	</script>
+	<script src="https://maps.googleapis.com/maps/api/js"></script>
 	
 	<link rel="stylesheet" type="text/css" media="all" href="css/style.css">
 	<link rel="stylesheet" type="text/css" media="all" href="css/ericprieto-simply-toast-6d5bbb5/simply-toast.css">
@@ -22,8 +24,10 @@
 
 	<script type="text/javascript" src="collectpoints.js"></script> 
 	<script type="text/javascript" src="geoencode.js"></script>
+	<script type="text/javascript" src="userFunc.js"></script>
 	
 	<script type="text/javascript" src="menuFunc.js"></script>
+	<script type="text/javascript" src="mapFunc.js"></script>
 	
 </head>
 <body>
@@ -102,7 +106,7 @@
 			<label for="Password">Password:</label>
 			<input type="text" name="password" id="Password" class="txtfield" tabindex="2">
 
-			<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Submit" tabindex="3"></div>
+			<div class="center"><input type="submit" name="loginb" id="loginb" class="flatbtn-blu hidemodal" value="Submit" tabindex="3"></div>
 		</form>
 	</div>
 
@@ -110,12 +114,11 @@
 		<h2>Property Details</h2>
 		<form class="loginform" id="shape_form" method="get" action="javascript:tag_dataset()">
 			<label for="username">Shape:</label>
-			<form class="loginform" id="shape_form" method="get" action="javascript:tag_dataset()">
 			<select id="shape" class="txtfield" tabindex="1">
   				<option value="circle">Circle</option>
   				<option value="rectangle">Rectangle</option>
  			    </select>
- 			</form>
+ 			
 			
 			<label for="username">Name:</label>
 			<input type="text" name="username" id="name" class="txtfield" tabindex="1">

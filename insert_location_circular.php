@@ -7,7 +7,8 @@ $type=$_POST['type'];
 $radial=$_POST['radial'];
 $cost=$_POST['cost'];
 $margin=$_POST['margin'];
+$ownerID=$user
 
-$query = "insert into locations_circular values('$latitude', '$longitude', '$name', '$type', $radial, $cost, $margin);";
+$query = "insert into locations_circular values('$latitude', '$longitude', '$name', '$type', $radial, $cost, $margin,$ownerID);";
 $result=mysql_query($query);
 ?>
