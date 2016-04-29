@@ -7,22 +7,19 @@ include('header.php');
  //$db = mysql_select_db("dharavi", $connection);
 
 //Fetching Values from URL  
-$query = "select * from locations_circular;";
+$query = "select * from roads_parts;";
 $result = mysql_query($query);
 $data = array();
+
 while($row = mysql_fetch_row($result)){
-	$temp['latitude'] = $row[0];
-	$temp['longitude'] = $row[1];
-	$temp['name'] = $row[2];
-	$temp['type'] = $row[3];
-	$temp['radial'] = $row[4];
-	$temp['cost'] = $row[5];
-	$temp['margin'] = $row[6];
-	$temp['ownerID']=$row[7];
-	$temp['ID']=$row[8];
-	$dat=mysql_query("SELECT * FROM userdata WHERE ID='$row[7]' limit 1");
+	$temp['id'] = $row[0];
+	$temp['partNo'] = $row[1];
+	$temp['lat'] = $row[2];
+	$temp['long1'] = $row[3];
+	
+	$dat=mysql_query("SELECT * FROM roads_general WHERE RoadID='$row[0]' limit 1");
 	$own = mysql_fetch_array($dat);
-	$temp['owner']=$own['Name'];
+	$temp['owner']=$own['OwnerID'];
 	$data[] = $temp;
 }
 

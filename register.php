@@ -1,10 +1,10 @@
 <?php
 // Establishing connection with server..
- $connection = mysql_connect("localhost", "root", "");
+ //$connection = mysql_connect("localhost", "root", "");
 
 // Selecting Database 
- $db = mysql_select_db("dharavi", $connection);
-
+ //$db = mysql_select_db("dharavi", $connection);
+include('header.php');
 //Fetching Values from URL  
 $name=$_POST['name1'];
 $email=$_POST['email1'];

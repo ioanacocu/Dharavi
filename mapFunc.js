@@ -1,6 +1,9 @@
 var poly;
 var map;
 var propMarkers=[];
+var dharavi;
+var path=[];
+var listener1;
 	
 function initialize() {
   geocoder = new google.maps.Geocoder();
@@ -46,7 +49,7 @@ var mapOptions = {
 				{lat: 19.057832038234988 , lng: 72.8699605462316}
   					];
 
- var dharavi = new google.maps.Polygon({
+ dharavi = new google.maps.Polygon({
     paths: dharaviLimits
    
   });
@@ -61,23 +64,24 @@ var mapOptions = {
   });
 
  dharaviContour.setMap(map);
- 
-  poly.setMap(map);
+ fetch_dataset();
+  //poly.setMap(map);
+  
   //poly.setMap(dharaviContour);
 
   // Add a listener for the click event
-  map.addListener('click', addLatLng);
+  listener1=map.addListener('click', addLatLng);
 }
 
 
 
 function addLatLng(event) {
-  var path = poly.getPath();
+  path = poly.getPath();
   path.push(event.latLng);
  	console.log(event);
-				var latitude = event.latLng.lat();
-				var longitude = event.latLng.lng();
-				console.log(latitude + ' ' + longitude);
+	var latitude = event.latLng.lat();
+	var longitude = event.latLng.lng();
+	console.log(latitude + ' ' + longitude);
 
       marker = new google.maps.Marker({
       position: event.latLng,

@@ -1,3 +1,7 @@
+<?php
+// Start the session
+session_start();
+?>
 <html>
 <head>
 	<style type="text/css">
@@ -25,9 +29,19 @@
 	<script type="text/javascript" src="collectpoints.js"></script> 
 	<script type="text/javascript" src="geoencode.js"></script>
 	<script type="text/javascript" src="userFunc.js"></script>
-	
+	<script type="text/javascript" src="propertiesFunc.js"></script>
 	<script type="text/javascript" src="menuFunc.js"></script>
 	<script type="text/javascript" src="mapFunc.js"></script>
+	<script type="text/javascript" src="menuNegFunc.js"></script>
+	<script type="text/javascript" src="roadFunc.js"></script>
+	<script type="text/javascript" src="negFunc.js"></script>
+	<script type="text/javascript" src="processRoadFunc.js"></script>
+	<script type="text/javascript" src="chatBoxFunc.js"></script>
+	<script type="text/javascript" src="allFunc.js"></script>
+
+
+
+
 	
 </head>
 <body>
@@ -48,7 +62,7 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a class="active" href="javascript:remove()">Reset</a></li>
+					<li><a href="javascript:PopulateNewSelections()">Add properties</a></li>
 					<li><a href="#shape_modal" id="modaltrigger1">Tag Dataset</a></li>
 					<li><a href="javascript:change_player()">Finish</a></li>
 					<li><a href="#register_modal" id="modaltrigger3">Log In</a></li>
@@ -71,13 +85,17 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="javascript:remove()">Reset</a></li>
+					<li><a href="javascript:retrieveRoad()">Show all Roads</a></li>
+					<li><a href="javascript:reset()">Reset</a></li>
 					<li><a href="javascript:new_marker()">Draw Path</a></li>
 					<li><a href="javascript:find_intersection()">Process Path</a></li>
+					<li><a href="javascript:addRoad()">AddRoad</a></li>
+					<li><a href="javascript:PopulateRoadList()">EditRoads</a></li>
 					<li><a href="javascript:PopulateNegotiationPlaces()">Negotiate</a></li>
 					<li><a href="javascript:PopulateObstructionsForSafePath()">Safe Path</a></li>
 					<li><a href="javascript:construction_cost()">Construction Cost</a></li>
 					<li ><a href="#parameter_modal" id="modaltrigger">Increase Budget</a></li>
+					<li><a href="javascript:chatBoxPopulate()">OpenChat</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
@@ -89,14 +107,14 @@
 			<!-- <label for="username">Width of Road:</label>
 			<input type="text" name="username" id="width" class="txtfield" tabindex="1"> -->
 
-			<label for="password">Total Budget: (INR)</label>
+			<label for="password">Total Budget: ($)</label>
 			<input type="text" name="password" id="cost" class="txtfield" tabindex="2">
 
 			<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Submit" tabindex="3"></div>
 		</form>
 	</div>
 <div class="loginmodal" id="register_modal" style="display:none;">
-		<h1>Login or Register</h1>
+		<h1>Login or <a href="https://youplaceit.hum.uu.nl/Dharavi/registration.html"> Register </a></h1>
 		<form class="loginform" id="register_form" method="post" action="index.html">
 			<!-- <label for="username">Width of Road:</label>
 			<input type="text" name="username" id="width" class="txtfield" tabindex="1"> -->
@@ -123,28 +141,41 @@
 			<label for="username">Name:</label>
 			<input type="text" name="username" id="name" class="txtfield" tabindex="1">
 
-			<label for="username">Type:</label>
-			<select id="type" class="txtfield" tabindex="1">
+			<label for="username"> Owner name and type: <div id="chatUser"> Type: </div><div id="propertyType"> Type: </div></label>
+			<select id="type" class="txtfield" tabindex="1" style="display:none">
   				<option value="NGO">NGO</option>
   				<option value="GOV">GOV</option>
   				<option value="PVT">PVT</option>
+  				<option value="IND">IND</option>
+  				<option value="DEV">DEV</option>
  			    </select>
 			<!-- <input type="text" name="username" id="type" class="txtfield" tabindex="1"> -->
 
-			<label for="username">Radial Distance: (if circle)</label>
-			<input type="text" name="username" id="radial" class="txtfield" tabindex="1">
-
-			<label for="username">Cost per meter square:</label>
+			
+			<label for="username">Cost per square meter ($):</label>
 			<input type="text" name="username" id="costpmetersquare" class="txtfield" tabindex="1">
 
-			<label for="username">Negotiation margin:</label>
+			<label for="username">Negotiation margin (%):</label>
 			<input type="text" name="username" id="margin" class="txtfield" tabindex="1">
 
 			<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Enter" tabindex="3"></div>
 		</form>
 	</div>
-<div id="box">
+
 		<div id="map-canvas"></div>
+		
+			<div id="addition" style="display: none">
+
+			
+			    Select <select onchange="javascript:additionselectionchanged()" id = "add-places"><option></option></select>
+			    <div id="ongoing_addition">
+
+			    </div>	
+			    <div class="center"><input type="submit" name="addbtn" id="addbtn" class="button" value="Add Property" tabindex="3"></div>
+			    <div class="center"><input type="submit" name="deletebtn" id="deletebtn" class="button" value="Delete Property" tabindex="3"></div>
+			    <div class="center"><input type="submit" name="finishAdd" id="finishAdd" class="button" value="Finish" tabindex="3"></div>
+			</div>
+		
 		<div id="negotiation">
 			<div>
 			    Select <select onchange="javascript:negotiationselectionchanged()" id = "negotiation-places"><option></option></select>
@@ -153,13 +184,90 @@
 			    </div>	
 			</div>
 		</div>
+		<div id="editRoads" style="display: none">
+			<div>
+			    Select <select onchange="javascript:select_roads_changed()" id = "roads-list"><option></option></select>
+			    <div id="roads_list">
+
+			    </div>	
+			</div>
+			 <div class="center"><input type="submit" name="DeleteRoad" id="DeleteRoad" class="button" value="Delete" tabindex="3"></div>
+			  <div class="center"><input type="submit" name="VoteForRoad" id="VoteForRoad" class="button" value="Vote" tabindex="3"></div>
 		</div>
-		</div>
+		<div id="safe_path">
+			<div>
+			    <form id='obstructions_checklist' action="javascript:CreateSafePath()">
+					
+				</form>
+			</div>
+			</div>
+		<div id="wrapper" style="display: none">
+    		<div id="menu"  >
+        	<p class="welcome">Welcome, </br> <div class="welcome" id='chatUser' > User </div></p>
+        	<p class="logout"><a id="exit" href="#">Exit Chat</a></p>
+        	<p ><a id ="sendPM" href="#"> Send a Private Message</a></p>
+       	 	<div style="clear:both"></div>
+    		</div>    
+    	<div  id="chatbox" style="display:none" > 
+        	Chatbox
+	</div>
+	<form class="loginform" id="message_form" method="get" action="javascript:get_message()" >
+        <input name="usermsg" type="text" id="usermsg" >
+        <input name="submitmsg" type="submit"  id="submitmsg" value="Send" />
+    </form>
+
+	<div  id="privateChatbox" style="display:none">
+	Chatbox
+     </div>   	
+    <div id="selectPart">
+       Select <select onchange="javascript:select_users_changed()" id = "messages_for" style="display:none"><option></option>
+   </select>
+
+	<div id="mess">
+
+	</div>	
+			</div>
+		<form class="loginform" id="message_form_private" method="get" action="javascript:get_message_private()" style="display:none">
+        <input name="usermsgP" type="text" id="usermsgP" >
+        <input name="submitmsgP" type="submit"  id="submitmsgP" value="Send" />
+    </form>
+     
+ </div>
+    
+</div>
 	
+	<?php
+// remove all session variables
+session_unset(); 
+
+// destroy the session 
+session_destroy(); 
+?>
+
 
 </body>
 	<script type="text/javascript">
+	$(document).ready(function(){
+    setInterval (loadLog, 250);
+    setInterval (loadLogPrivate, 250);
+     //setInterval (select_users_changed, 250);
+    
+});
 	$(function(){
+		$('#message_form').submit(function(e) {
+			currMsg=$('#usermsg').val();
+			get_message();
+			console.log(currMsg);
+			return false;
+		});
+		
+   		$('#message_form_private').submit(function(e) {
+   			currMsg=$('#usermsgP').val();
+   			get_message_private();
+   			console.log(currMsg);
+   			return false;
+   		});
+
 		$('#parameter_form').submit(function(e) {
 			budget=$('#cost').val();
 			return false;
@@ -176,7 +284,7 @@
 			shape_entered=$('#shape').val();
 			name_entered=$('#name').val();
 			type_entered=$('#type').val();
-			radial_entered=$('#radial').val();
+			//radial_entered=$('#radial').val();
 			cost_entered=$('#costpmetersquare').val();
 			margin_entered=$('#margin').val();
 			console.log(shape_entered);
@@ -195,6 +303,10 @@
 			$('#modaltrigger3').click();
 		}
 	});
+		console.log(user);
+	$("#chatUser").html(user);
+	$("#propertyType").html(user);	
+	 
 	</script>
 
 

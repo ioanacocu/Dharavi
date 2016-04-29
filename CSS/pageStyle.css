@@ -17,6 +17,40 @@ body, #box{
 			border: 5px solid brown;
 			background: url(../img/hd-bg.png);
 		}
+
+		.msgln { margin:0 0 2px 0; }
+		#chatbox {
+    		width: 90%;
+    		height: 70%;
+			float: right;
+			display: none;
+			margin-right: 1%;
+			margin-top: 2%;
+			background:#fff;
+			overflow:auto;
+    		 }
+    	#privateChatbox {
+    		width: 90%;
+    		height: 70%;
+			float: right;
+			display: none;
+			margin-right: 1%;
+			margin-top: 2%;
+			background:#fff;
+			overflow:auto;
+    		 }
+
+    	#wrapper{
+    		width: 18%;
+			float: right;
+			display: none;
+			margin-right: 1%;
+			margin-top: 2%;
+			height: 100%;
+			 border:1px solid #ACD8F0;
+			background:#EBF4FB;}
+
+
 		#player{
 			display: none;
 		}

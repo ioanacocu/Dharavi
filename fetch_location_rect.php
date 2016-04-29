@@ -1,10 +1,5 @@
 <?php
 include('header.php');
- //$connection = mysql_connect("localhost", "root", "");
-
-// Selecting Database 
- //$db = mysql_select_db("dharavi", $connection);
- 
 $query = "select * from locations_rectangular;";
 $result = mysql_query($query);
 $data = array();
@@ -21,14 +16,10 @@ while($row = mysql_fetch_row($result)){
 	$temp['cost'] = $row[9];
 	$temp['margin'] = $row[10];
 	$temp['type'] = $row[11];
-	$temp['ID'] = $row[13];
-	$temp['OwnerID'] = $row[12];
-	$dat=mysql_query("SELECT * FROM userdata WHERE ID='$row[12]' limit 1");
-	$own = mysql_fetch_array($dat);
-	$temp['owner']=$own['Name'];
+	$temp['ID'] = $row[12];
+	$temp['OwnerID'] = $row[13];
 	$data[] = $temp;
 
 }
 echo json_encode($data);
-mysql_close ($connection);
 ?>
